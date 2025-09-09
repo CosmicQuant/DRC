@@ -1,0 +1,1994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotary Club of Diani - Service Above Self</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Open+Sans+Condensed:wght@300;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        /* Section entrance animations */
+        .section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.2s cubic-bezier(0.23, 1, 0.32, 1),
+                      transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+            will-change: opacity, transform;
+        }
+        
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #17458f 0%, #0067c8 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .rotary-wheel {
+            width: 50px;
+            height: 50px;
+            background: #f7a81b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #17458f;
+        }
+
+        .club-name h1 {
+            font-family: 'Open Sans Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .club-name p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ripple {
+            position: absolute;
+            background: rgba(255,255,255,0.7);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        .btn-primary {
+            background: #f7a81b;
+            color: #17458f;
+        }
+
+        .btn-primary:hover {
+            background: #e0991a;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid #f7a81b;
+        }
+
+        .btn-secondary:hover {
+            background: #f7a81b;
+            color: #17458f;
+        }
+
+        /* Navigation */
+        nav {
+            background: #0067c8;
+            padding: 0.8rem 0;
+            position: fixed;
+            width: 100%;
+            top: 80px;
+            z-index: 999;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 0 2rem;
+        }
+
+        .nav-content a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-content a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Main Content */
+        main {
+            margin-top: var(--app-tight, var(--app-offset, 120px)); /* Reduced the offset */
+            display: block; /* Ensure main content is displayed as block */
+            width: 100%;
+            overflow: visible; /* Ensure content isn't hidden */
+        }
+
+        .section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: block; /* Ensure sections are displayed as block */
+            width: 100%;
+        }
+
+        /* Remove space above hero section */
+        .hero {
+            margin-top: -20px; /* Pull up the hero section */
+        }
+
+        .hero {
+            position: relative;
+            height: calc(100vh - var(--app-tight, var(--app-offset, 140px)));
+            min-height: 600px;
+            overflow: hidden;
+        }
+
+        /* Carousel Styles */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            max-width: 800px;
+            padding: 0 2rem;
+        }
+
+        .slide-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;          /* edge-to-edge coverage */
+            background-position: 50% 25%;    /* bias upward to keep top faces visible */
+            background-repeat: no-repeat;    /* no tiling */
+            background-color: #17458f;
+            z-index: 1;
+        }
+
+        .slide-content h2 {
+            font-family: 'Open Sans Condensed', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            padding: 0.5rem 0.8rem;
+            background: rgba(0,0,0,0.25);
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .slide-content p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            padding: 0.4rem 0.7rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        /* Carousel Controls */
+        .carousel-dots {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            display: flex;
+            gap: 10px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: #f7a81b;
+            transform: scale(1.2);
+        }
+
+        .dot:hover {
+            background: rgba(255,255,255,0.8);
+        }
+
+        .carousel-arrows {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 3;
+        }
+
+        .carousel-arrow {
+            background: rgba(23,69,143,0.8);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-arrow:hover {
+            background: #f7a81b;
+            color: #17458f;
+            transform: scale(1.1);
+        }
+
+        .carousel-arrow.prev {
+            left: 20px;
+        }
+
+        .carousel-arrow.next {
+            right: 20px;
+        }
+
+        .section h2 {
+            font-family: 'Open Sans Condensed', sans-serif;
+            font-size: 2.5rem;
+            color: #17458f;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: #f7a81b;
+        }
+
+        .section h3 {
+            font-family: 'Open Sans Condensed', sans-serif;
+            font-size: 1.8rem;
+            color: #17458f;
+            margin-bottom: 1rem;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .about-image {
+            background-image: url('./dianibeach.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 300px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .about-image-content {
+            padding: 1rem 1.5rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 6px;
+            backdrop-filter: blur(3px);
+        }
+
+        .about-image-content h3 {
+            color: white;
+            margin-bottom: 0.7rem;
+            font-size: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+        }
+
+        .about-image-content p {
+            color: white;
+            margin-bottom: 0.5rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .project-card:active {
+            transform: translateY(-2px);
+        }
+
+        .project-card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 200px; /* Ensure minimum height for content */
+        }
+
+        .project-card h3 {
+            color: #17458f;
+            margin-bottom: 1rem;
+        }
+
+        .project-card p {
+            margin-bottom: 1rem;
+            flex: 1; /* Allow description to take remaining space */
+        }
+
+        .project-card-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+            margin-top: auto; /* Push stats to bottom */
+        }
+
+        .project-card-stat {
+            text-align: center;
+            padding: 0.5rem;
+        }
+
+        .project-card-stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #17458f;
+            display: block;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .project-card-stat-number.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project-card-stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+
+        .project-status {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .status-ongoing {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-completed {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        /* Membership Section */
+        .membership-content {
+            background: white;
+            border-radius: 10px;
+            padding: 3rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .benefit-item {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .benefit-icon {
+            width: 60px;
+            height: 60px;
+            background: #f7a81b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: #17458f;
+        }
+
+        /* Contact Section */
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info {
+            background: #17458f;
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+        }
+
+        .contact-info h3 {
+            color: #f7a81b;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .contact-item i {
+            width: 20px;
+            margin-right: 1rem;
+            color: #f7a81b;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #17458f;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e9ecef;
+            border-radius: 5px;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #17458f;
+        }
+
+        /* Footer */
+        footer {
+            background: #17458f;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: #f7a81b;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .social-media {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .social-media h4 {
+            color: #f7a81b;
+            margin-bottom: 1rem;
+            font-family: 'Open Sans Condensed', sans-serif;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #f7a81b;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 2px solid #f7a81b;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: #f7a81b;
+            color: #17458f;
+            transform: translateY(-2px);
+        }
+
+        .social-link span {
+            font-size: 1.2rem;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideIn 0.3s ease;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #17458f, #0067c8);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px 10px 0 0;
+            position: relative;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-family: 'Open Sans Condensed', sans-serif;
+            font-size: 2rem;
+        }
+
+        .close {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #f7a81b;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .project-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .project-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .project-image:hover {
+            transform: scale(1.05);
+        }
+
+        .project-details {
+            margin: 1.5rem 0;
+        }
+
+        .project-details h3 {
+            color: #17458f;
+            font-family: 'Open Sans Condensed', sans-serif;
+            margin-bottom: 1rem;
+        }
+
+        .project-details p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .project-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #17458f;
+            display: block;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .stat-number.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Events Section */
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .event-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .event-image {
+            height: 200px;
+            width: 100%;
+        }
+
+        .event-content {
+            padding: 1.5rem;
+        }
+
+        .event-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .event-content h3 {
+            color: #17458f;
+            font-family: 'Open Sans Condensed', sans-serif;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            padding: 0.3rem 0.6rem;
+            background: rgba(255,255,255,0.7);
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .event-content p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            padding: 0.2rem 0.5rem;
+            background: rgba(255,255,255,0.6);
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .event-date {
+            display: inline-block;
+            background: #f7a81b;
+            color: #17458f;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-content {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .hero {
+                height: calc(100vh - var(--app-tight, var(--app-offset, 140px)));
+                min-height: 500px;
+            }
+
+            .slide-content h2 {
+                font-size: 2rem;
+            }
+
+            .slide-content p {
+                font-size: 1.1rem;
+            }
+
+            .carousel-arrows {
+                padding: 0 10px;
+            }
+
+            .carousel-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .carousel-dots {
+                bottom: 20px;
+            }
+
+            .dot {
+                width: 10px;
+                height: 10px;
+            }
+
+            .about-content,
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                height: calc(100vh - var(--app-tight, var(--app-offset, 140px)));
+                min-height: 400px;
+            }
+
+            .slide-content h2 {
+                font-size: 1.8rem;
+            }
+
+            .slide-content p {
+                font-size: 1rem;
+            }
+
+            .carousel-arrow {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+
+            .carousel-arrows {
+                padding: 0 5px;
+            }
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        /* Add animation delay for consecutive elements */
+        .project-card:nth-child(1) { animation-delay: 0.1s; }
+        .project-card:nth-child(2) { animation-delay: 0.2s; }
+        .project-card:nth-child(3) { animation-delay: 0.3s; }
+        .project-card:nth-child(4) { animation-delay: 0.4s; }
+        .project-card:nth-child(5) { animation-delay: 0.5s; }
+        .project-card:nth-child(6) { animation-delay: 0.6s; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <img src="./logo.jpg" alt="Rotary Club of Diani" style="height:50px;width:auto;object-fit:contain;"/>
+                <div class="club-name">
+                    <h1>Rotary Club of Diani</h1>
+                    <p>Service Above Self</p>
+                </div>
+            </div>
+            <div class="cta-buttons">
+                <a href="#membership" class="btn btn-primary">Join Us</a>
+                <a href="#contact" class="btn btn-secondary">Donate</a>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-content">
+            <a href="#home">Home</a>
+            <a href="#about">About Us</a>
+            <a href="#events">Events</a>
+            <a href="#projects">Our Projects</a>
+            <a href="#membership">Membership</a>
+            <a href="#contact">Contact Us</a>
+        </div>
+    </nav>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="carousel-container">
+                <div class="carousel">
+                    <div class="carousel-slide active">
+                        <div class="slide-content">
+                            <h2>Welcome to Rotary Club of Diani</h2>
+                            <p>We are a community of leaders who come together to exchange ideas and take action to create lasting change in our local communities and around the world.</p>
+                            <a href="#membership" class="btn btn-primary">Join Our Mission</a>
+                        </div>
+                        <div class="slide-image" style="background-image: url('./group-stairs.png');"></div>
+                    </div>
+                    
+                    <div class="carousel-slide">
+                        <div class="slide-content">
+                            <h2>Service Above Self</h2>
+                            <p>Join us in making a meaningful difference through community service projects, youth programs, and humanitarian initiatives across Diani and beyond.</p>
+                            <a href="#projects" class="btn btn-primary">View Our Projects</a>
+                        </div>
+                        <div class="slide-image" style="background-image: url('./tshirt-handover.jpg');"></div>
+                    </div>
+                    
+                    <div class="carousel-slide">
+                        <div class="slide-content">
+                            <h2>Building Community Together</h2>
+                            <p>From clean water initiatives to youth leadership programs, we're creating lasting positive change in our community through collaborative action.</p>
+                            <a href="#about" class="btn btn-primary">Learn More</a>
+                        </div>
+                        <div class="slide-image" style="background-image: url('./gala-1.png'); background-position: 50% 15%;"></div>
+                    </div>
+                    
+                    <div class="carousel-slide">
+                        <div class="slide-content">
+                            <h2>Join Our Global Network</h2>
+                            <p>Connect with 1.4 million Rotarians worldwide and be part of a movement that's making the world a better place, one community at a time.</p>
+                            <a href="#membership" class="btn btn-primary">Become a Member</a>
+                        </div>
+                        <div class="slide-image" style="background-image: url('./gala-2.png');"></div>
+                    </div>
+
+                    <div class="carousel-slide">
+                        <div class="slide-content">
+                            <h2>Innovation in Action</h2>
+                            <p>Exploring new ideas and tools to amplify our community impact across Diani and beyond.</p>
+                            <a href="#projects" class="btn btn-primary">See Our Work</a>
+                        </div>
+                        <div class="slide-image" style="background-image: url('./Gemini_Generated_Image.png'); background-size: contain; background-repeat: no-repeat; background-position: center; background-color: #17458f;"></div>
+                    </div>
+                </div>
+                
+                <!-- Carousel Controls -->
+                <div class="carousel-dots">
+                    <span class="dot active" onclick="currentSlide(1)"></span>
+                    <span class="dot" onclick="currentSlide(2)"></span>
+                    <span class="dot" onclick="currentSlide(3)"></span>
+                    <span class="dot" onclick="currentSlide(4)"></span>
+                    <span class="dot" onclick="currentSlide(5)"></span>
+                </div>
+                
+                <div class="carousel-arrows">
+                    <button class="carousel-arrow prev" onclick="changeSlide(-1)">❮</button>
+                    <button class="carousel-arrow next" onclick="changeSlide(1)">❯</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <h2>About Us</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Our Mission</h3>
+                    <p>The Rotary Club of Diani is dedicated to providing humanitarian service, encouraging high ethical standards in all vocations, and helping build goodwill and peace in the world. We believe that by working together, we can make a meaningful difference in our community.</p>
+                    
+                    <h3>Our Vision</h3>
+                    <p>To be the premier service organization in Diani, recognized for our commitment to community development, youth empowerment, and international service projects that create lasting positive change.</p>
+                    
+                    <h3>Our Values</h3>
+                    <p>We uphold the Four-Way Test: Is it the truth? Is it fair to all concerned? Will it build goodwill and better friendships? Will it be beneficial to all concerned?</p>
+                </div>
+                <div class="about-image">
+                    <div class="about-image-content">
+                        <h3>Established 2015</h3>
+                        <p>Chartered by Rotary International</p>
+                        <p>Diani Beach Road</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="events" class="section">
+            <h2>Events & Activities</h2>
+            <div class="events-grid">
+                <div class="event-card">
+                    <div class="event-image" style="background: url('./joint-fellowship-poster.jpg') center/cover;"></div>
+                    <div class="event-content">
+                        <h3>Joint Fellowship</h3>
+                        <p>Rotary Clubs of Diani Kilifi joint fellowship event at Zuri Furnished Apartments, Kilifi. A wonderful opportunity for members to connect and build relationships.</p>
+                        <span class="event-date">April 5th, 2025</span>
+                    </div>
+                </div>
+                
+                <div class="event-card">
+                    <div class="event-image" style="background: url('./charity-beach-run-poster.jpg') center/cover;"></div>
+                    <div class="event-content">
+                        <h3>Charity Beach Run</h3>
+                        <p>Annual charity beach run at Neptune Paradise Resort, Diani. Supporting local community projects through fitness and fundraising.</p>
+                        <span class="event-date">December 7th</span>
+                    </div>
+                </div>
+                
+                <div class="event-card">
+                    <div class="event-image" style="background: url('./mwachema-groundbreaking-poster.jpg') center/cover;"></div>
+                    <div class="event-content">
+                        <h3>Mwachema Primary School Project</h3>
+                        <p>Groundbreaking ceremony for the Mwachema Primary School project, with President Maurice Karume as guest of honor.</p>
+                        <span class="event-date">May 17th, 2025</span>
+                    </div>
+                </div>
+                
+                <div class="event-card">
+                    <div class="event-image" style="background: url('./medical-camp-banner.jpg') center/cover;"></div>
+                    <div class="event-content">
+                        <h3>Free Medical Camp</h3>
+                        <p>Community health outreach in partnership with Kwale County Government, providing free medical services to underserved communities.</p>
+                        <span class="event-date">Ongoing</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="section">
+            <h2>Our Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card fade-in" onclick="openProjectModal('clean-water')">
+                    <div class="project-card-content">
+                        <h3>Clean Water Initiative</h3>
+                        <p>Providing access to clean drinking water in underserved communities through the installation of water purification systems and boreholes.</p>
+                        <span class="project-status status-ongoing">Ongoing</span>
+                    </div>
+                    <div class="project-card-stats">
+                        <div class="project-card-stat">
+                            <span class="project-card-stat-number">15</span>
+                            <span class="project-card-stat-label">Communities Served</span>
+                        </div>
+                        <div class="project-card-stat">
+                            <span class="project-card-stat-number">5000</span>
+                            <span class="project-card-stat-label">People Reached</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card fade-in" onclick="openProjectModal('youth-leadership')">
+                    <div class="project-card-content">
+                        <h3>Youth Leadership Program</h3>
+                        <p>Empowering young leaders through mentorship, leadership training, and scholarship programs to prepare them for future success.</p>
+                        <span class="project-status status-ongoing">Ongoing</span>
+                    </div>
+                    <div class="project-card-stats">
+                        <div class="project-card-stat">
+                            <span class="project-card-stat-number">120</span>
+                            <span class="project-card-stat-label">Youth Mentored</span>
+                        </div>
+                        <div class="project-card-stat">
+                            <span class="project-card-stat-number">45</span>
+                            <span class="project-card-stat-label">Scholarships</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card fade-in" onclick="openProjectModal('health-outreach')">
+                    <div class="project-card-content">
+                        <h3>Community Health Outreach</h3>
+                        <p>Organizing free medical camps, health education workshops, and vaccination drives to improve community health outcomes.</p>
+                        <span class="project-status status-completed">Completed</span>
+                    </div>
+                    <div class="project-card-stats">
+                        <div class="project-card-stat">
+                            <span class="project-card-stat-number">2500</span>
+                            <span class="project-card-stat-label">People Screened</span>
+                        </div>
+                        <div class="project-card-stat">
+                            <span class="project-card-stat-number">15</span>
+                            <span class="project-card-stat-label">Medical Camps</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card fade-in" onclick="openProjectModal('environmental')">
+                    <div class="project-card-content">
+                        <h3>Environmental Conservation</h3>
+                        <p>Beach cleanup initiatives, tree planting campaigns, and environmental education programs to protect our coastal ecosystem.</p>
+                        <span class="project-status status-ongoing">Ongoing</span>
+                    </div>
+                    <div class="project-card-stats">
+                        <div class="project-card-stat">
+                            <span class="project-card-stat-number">50</span>
+                            <span class="project-card-stat-label">Beach Cleanups</span>
+                        </div>
+                        <div class="project-card-stat">
+                            <span class="project-card-stat-number">2000</span>
+                            <span class="project-card-stat-label">Trees Planted</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card fade-in" onclick="openProjectModal('education')">
+                    <div class="project-card-content">
+                        <h3>Education Support</h3>
+                        <p>Building and renovating schools, providing educational materials, and supporting teacher training programs in local communities.</p>
+                        <span class="project-status status-completed">Completed</span>
+                    </div>
+                    <div class="project-card-stats">
+                        <div class="project-card-stat">
+                            <span class="project-card-stat-number">8</span>
+                            <span class="project-card-stat-label">Schools Improved</span>
+                        </div>
+                        <div class="project-card-stat">
+                            <span class="project-card-stat-number">1200</span>
+                            <span class="project-card-stat-label">Students Benefited</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card fade-in" onclick="openProjectModal('women-empowerment')">
+                    <div class="project-card-content">
+                        <h3>Women's Empowerment</h3>
+                        <p>Supporting women entrepreneurs through microfinance programs, skills training, and business development workshops.</p>
+                        <span class="project-status status-ongoing">Ongoing</span>
+                    </div>
+                    <div class="project-card-stats">
+                        <div class="project-card-stat">
+                            <span class="project-card-stat-number">150</span>
+                            <span class="project-card-stat-label">Women Supported</span>
+                        </div>
+                        <div class="project-card-stat">
+                            <span class="project-card-stat-number">75</span>
+                            <span class="project-card-stat-label">Businesses Started</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="membership" class="section">
+            <h2>Membership</h2>
+            <div class="membership-content">
+                <h3>Join Our Community of Leaders</h3>
+                <p>Becoming a member of the Rotary Club of Diani means joining a global network of 1.4 million members who are committed to making a difference. Our members come from diverse professional backgrounds, united by a common goal of service above self.</p>
+                
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🌍</div>
+                        <h4>Global Network</h4>
+                        <p>Connect with Rotarians worldwide and participate in international service projects.</p>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🤝</div>
+                        <h4>Professional Development</h4>
+                        <p>Enhance your leadership skills and expand your professional network.</p>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">❤️</div>
+                        <h4>Community Impact</h4>
+                        <p>Make a tangible difference in your local community through meaningful service projects.</p>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🎓</div>
+                        <h4>Learning Opportunities</h4>
+                        <p>Attend educational programs, conferences, and workshops to grow personally and professionally.</p>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button onclick="openMembershipModal()" class="btn btn-primary">Apply for Membership</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <h2>Contact Us</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Get in Touch</h3>
+                    <div class="contact-item">
+                        <i>📍</i>
+                        <div>
+                            <strong>Meeting Location:</strong><br>
+                            Diani Beach Hotel<br>
+                            Diani Beach, Kwale County<br>
+                            Kenya
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i>📅</i>
+                        <div>
+                            <strong>Meeting Schedule:</strong><br>
+                            Every Tuesday, 6:00 PM<br>
+                            Weekly Club Meetings
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i>📧</i>
+                        <div>
+                            <strong>Email:</strong><br>
+                            info@rotaryclubdiani.org<br>
+                            president@rotaryclubdiani.org
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i>📱</i>
+                        <div>
+                            <strong>Phone:</strong><br>
+                            +254 722 123 456<br>
+                            +254 733 987 654
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <h3>Send us a Message</h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#events">Events</a>
+                <a href="#projects">Projects</a>
+                <a href="#membership">Membership</a>
+                <a href="#contact">Contact</a>
+            </div>
+            
+            <div class="social-media">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/rc_diani/?hl=en" target="_blank" class="social-link instagram" style="gap:0.5rem;">
+                        <img src="./ig.jpg" alt="Instagram" style="width:18px;height:18px;border-radius:4px;object-fit:cover;"/> Instagram
+                    </a>
+                    <a href="https://www.facebook.com/p/RC-Diani-100089723046350/" target="_blank" class="social-link facebook" style="gap:0.5rem;">
+                        <img src="./fb.png" alt="Facebook" style="width:18px;height:18px;border-radius:3px;object-fit:cover;"/> Facebook
+                    </a>
+                </div>
+            </div>
+            
+            <p>&copy; 2025 Rotary Club of Diani. All rights reserved. | Diani Beach Road | Rotary International</p>
+            <p>Service Above Self | This We Believe</p>
+        </div>
+    </footer>
+
+    <!-- Project Modals -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Project Details</h2>
+                <span class="close" onclick="closeProjectModal()">&times;</span>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content will be dynamically loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Membership Registration Modal -->
+    <div id="membershipModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Join Rotary Club of Diani</h2>
+                <span class="close" onclick="closeMembershipModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="membershipForm">
+                    <div class="form-group">
+                        <label for="firstName">First Name *</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="lastName">Last Name *</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="profession">Profession/Occupation *</label>
+                        <input type="text" id="profession" name="profession" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company">Company/Organization</label>
+                        <input type="text" id="company" name="company">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Address *</label>
+                        <textarea id="address" name="address" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="city">City *</label>
+                        <input type="text" id="city" name="city" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postalCode">Postal Code</label>
+                        <input type="text" id="postalCode" name="postalCode">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="whyJoin">Why do you want to join Rotary? *</label>
+                        <textarea id="whyJoin" name="whyJoin" rows="4" required placeholder="Please tell us about your interest in community service and how you'd like to contribute to Rotary's mission."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="experience">Previous Community Service Experience</label>
+                        <textarea id="experience" name="experience" rows="3" placeholder="Please describe any previous volunteer or community service experience you have."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="referral">How did you hear about Rotary Club of Diani?</label>
+                        <select id="referral" name="referral">
+                            <option value="">Select an option</option>
+                            <option value="website">Website</option>
+                            <option value="social-media">Social Media (Instagram/Facebook)</option>
+                            <option value="friend">Friend/Colleague</option>
+                            <option value="rotarian">Current Rotarian</option>
+                            <option value="event">Community Event</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="terms" name="terms" required>
+                            I agree to the <a href="#" style="color: #17458f;">Terms and Conditions</a> and understand that my application will be reviewed by the membership committee. *
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="newsletter" name="newsletter">
+                            I would like to receive updates about Rotary Club of Diani activities and events.
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Submit Application</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Carousel functionality
+        function updateLayoutOffset() {
+            const header = document.querySelector('header');
+            const nav = document.querySelector('nav');
+            const offset = (header ? header.offsetHeight : 0) + (nav ? nav.offsetHeight : 0);
+            document.documentElement.style.setProperty('--app-offset', `${offset}px`);
+            const tight = Math.max(0, offset - 8); // pull up ~8px to remove perceived gap
+            document.documentElement.style.setProperty('--app-tight', `${tight}px`);
+        }
+
+        window.addEventListener('resize', updateLayoutOffset);
+        document.addEventListener('DOMContentLoaded', updateLayoutOffset);
+
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const dots = document.querySelectorAll('.dot');
+        const totalSlides = slides.length;
+        let autoSlideInterval;
+
+        // Initialize carousel
+        function initCarousel() {
+            showSlide(0);
+            startAutoSlide();
+        }
+
+        // Show specific slide
+        function showSlide(index) {
+            // Remove active class from all slides and dots
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+
+            // Activate current slide and dot
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+            
+            currentSlideIndex = index;
+        }
+
+        // Go to next slide
+        function nextSlide() {
+            const nextIndex = (currentSlideIndex + 1) % totalSlides;
+            showSlide(nextIndex);
+        }
+
+        // Go to previous slide
+        function prevSlide() {
+            const prevIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides;
+            showSlide(prevIndex);
+        }
+
+        // Change slide by direction (-1 for prev, 1 for next)
+        function changeSlide(direction) {
+            if (direction === 1) {
+                nextSlide();
+            } else {
+                prevSlide();
+            }
+            // Restart auto-slide after manual interaction
+            startAutoSlide();
+        }
+
+        // Go to specific slide
+        function currentSlide(slideNumber) {
+            showSlide(slideNumber - 1);
+            startAutoSlide();
+        }
+
+        // Start automatic sliding
+        function startAutoSlide() {
+            clearInterval(autoSlideInterval);
+            autoSlideInterval = setInterval(nextSlide, 2500); // Change slide every 2.5 seconds
+        }
+
+        // Stop automatic sliding
+        function stopAutoSlide() {
+            clearInterval(autoSlideInterval);
+        }
+
+        // Pause auto-slide on hover
+        const carouselContainer = document.querySelector('.carousel-container');
+        if (carouselContainer) {
+            carouselContainer.addEventListener('mouseenter', stopAutoSlide);
+            carouselContainer.addEventListener('mouseleave', startAutoSlide);
+        }
+
+        // Initialize carousel when page loads
+        document.addEventListener('DOMContentLoaded', initCarousel);
+
+        // Project data
+        const projectData = {
+            'clean-water': {
+                title: 'Clean Water Initiative',
+                status: 'Ongoing',
+                description: 'Our Clean Water Initiative is a comprehensive program aimed at providing sustainable access to clean drinking water in underserved communities across Diani and surrounding areas. This project addresses one of the most critical needs in our region.',
+                fullDescription: 'The Clean Water Initiative focuses on installing water purification systems, drilling boreholes, and implementing rainwater harvesting systems in communities that lack access to clean water. We work closely with local authorities, NGOs, and community leaders to ensure the sustainability and effectiveness of our interventions.',
+                images: [
+                    'https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1581578731548-c6a0c3f2f2c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+                ],
+                stats: [
+                    { number: '15', label: 'Communities Served' },
+                    { number: '5,000+', label: 'People Reached' },
+                    { number: '25', label: 'Water Points Installed' },
+                    { number: '3', label: 'Years Active' }
+                ],
+                impact: 'This initiative has significantly improved the health and quality of life for thousands of people in our community, reducing waterborne diseases and providing reliable access to clean water for daily needs.'
+            },
+            'youth-leadership': {
+                title: 'Youth Leadership Program',
+                status: 'Ongoing',
+                description: 'Empowering the next generation of leaders through comprehensive mentorship, leadership training, and scholarship programs that prepare young people for future success.',
+                fullDescription: 'Our Youth Leadership Program identifies and nurtures young leaders aged 15-25 through structured mentorship, leadership workshops, and scholarship opportunities. The program includes career guidance, community service projects, and international exchange opportunities.',
+                images: [
+                    'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1593113598332-cd288d649433?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1559027615-cd4628902d85?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+                ],
+                stats: [
+                    { number: '120', label: 'Youth Mentored' },
+                    { number: '45', label: 'Scholarships Awarded' },
+                    { number: '8', label: 'Leadership Workshops' },
+                    { number: '95%', label: 'Success Rate' }
+                ],
+                impact: 'Many of our program graduates have gone on to become successful professionals, community leaders, and even Rotary members, creating a positive cycle of leadership development in our community.'
+            },
+            'health-outreach': {
+                title: 'Community Health Outreach',
+                status: 'Completed',
+                description: 'Organizing free medical camps, health education workshops, and vaccination drives to improve community health outcomes and raise awareness about preventive healthcare.',
+                fullDescription: 'This comprehensive health program included free medical camps, health education workshops, vaccination drives, and awareness campaigns. We partnered with local healthcare providers and international organizations to maximize our impact.',
+                images: [
+                    'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1584515933487-779824d29309?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+                ],
+                stats: [
+                    { number: '2,500', label: 'People Screened' },
+                    { number: '15', label: 'Medical Camps' },
+                    { number: '1,800', label: 'Vaccinations Given' },
+                    { number: '12', label: 'Health Workshops' }
+                ],
+                impact: 'This program significantly improved community health awareness and provided essential medical services to underserved populations, contributing to better overall health outcomes in our region.'
+            },
+            'environmental': {
+                title: 'Environmental Conservation',
+                status: 'Ongoing',
+                description: 'Beach cleanup initiatives, tree planting campaigns, and environmental education programs to protect our coastal ecosystem and promote sustainable practices.',
+                fullDescription: 'Our environmental conservation efforts focus on protecting Diani\'s beautiful coastal ecosystem through regular beach cleanups, mangrove restoration, tree planting campaigns, and environmental education programs for schools and communities.',
+                images: [
+                    'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1518837695005-2083093ee35b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+                ],
+                stats: [
+                    { number: '50+', label: 'Beach Cleanups' },
+                    { number: '2,000', label: 'Trees Planted' },
+                    { number: '500', label: 'Students Educated' },
+                    { number: '10', label: 'Mangrove Sites' }
+                ],
+                impact: 'Our environmental efforts have helped maintain Diani\'s pristine beaches, increased green cover, and educated hundreds of students about environmental conservation, creating a more sustainable future for our community.'
+            },
+            'education': {
+                title: 'Education Support',
+                status: 'Completed',
+                description: 'Building and renovating schools, providing educational materials, and supporting teacher training programs in local communities to improve access to quality education.',
+                fullDescription: 'This comprehensive education initiative included school construction and renovation, provision of educational materials, teacher training programs, and scholarship support for needy students. We focused on improving infrastructure and educational quality in underserved areas.',
+                images: [
+                    'https://images.unsplash.com/photo-1497486751825-1233686d5d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+                ],
+                stats: [
+                    { number: '3', label: 'Schools Built' },
+                    { number: '5', label: 'Schools Renovated' },
+                    { number: '1,200', label: 'Students Benefited' },
+                    { number: '50', label: 'Teachers Trained' }
+                ],
+                impact: 'This project significantly improved educational infrastructure and quality in our target communities, providing better learning environments and opportunities for hundreds of students.'
+            },
+            'women-empowerment': {
+                title: 'Women\'s Empowerment',
+                status: 'Ongoing',
+                description: 'Supporting women entrepreneurs through microfinance programs, skills training, and business development workshops to promote economic independence and leadership.',
+                fullDescription: 'Our Women\'s Empowerment program provides microfinance support, business skills training, leadership development, and mentorship opportunities for women in our community. We focus on creating sustainable income-generating activities and promoting women\'s leadership roles.',
+                images: [
+                    'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1556157382-97eda2d62296?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+                ],
+                stats: [
+                    { number: '150', label: 'Women Supported' },
+                    { number: '75', label: 'Businesses Started' },
+                    { number: '25', label: 'Training Sessions' },
+                    { number: '85%', label: 'Success Rate' }
+                ],
+                impact: 'This program has empowered hundreds of women to start their own businesses, become financially independent, and take on leadership roles in their communities, creating a ripple effect of positive change.'
+            }
+        };
+
+        // Modal functions
+        function openProjectModal(projectId) {
+            const project = projectData[projectId];
+            if (!project) return;
+
+            document.getElementById('modalTitle').textContent = project.title;
+            document.getElementById('modalBody').innerHTML = `
+                <div class="project-gallery">
+                    ${project.images.map(img => `<img src="${img}" alt="${project.title}" class="project-image">`).join('')}
+                </div>
+                
+                <div class="project-details">
+                    <h3>Project Overview</h3>
+                    <p>${project.fullDescription}</p>
+                    
+                    <h3>Impact</h3>
+                    <p>${project.impact}</p>
+                </div>
+                
+                <div class="project-stats">
+                    ${project.stats.map(stat => `
+                        <div class="stat-item">
+                            <span class="stat-number">${stat.number}</span>
+                            <span class="stat-label">${stat.label}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <span class="project-status status-${project.status.toLowerCase()}">${project.status}</span>
+                </div>
+            `;
+            
+            document.getElementById('projectModal').style.display = 'block';
+            setTimeout(observeStats, 100); // Start observing stats after modal is visible
+        }
+
+        function closeProjectModal() {
+            document.getElementById('projectModal').style.display = 'none';
+        }
+
+        function openMembershipModal() {
+            document.getElementById('membershipModal').style.display = 'block';
+        }
+
+        function closeMembershipModal() {
+            document.getElementById('membershipModal').style.display = 'none';
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const projectModal = document.getElementById('projectModal');
+            const membershipModal = document.getElementById('membershipModal');
+            
+            if (event.target === projectModal) {
+                closeProjectModal();
+            }
+            if (event.target === membershipModal) {
+                closeMembershipModal();
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Form submission handling
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const subject = formData.get('subject');
+            const message = formData.get('message');
+            
+            // Simple validation
+            if (!name || !email || !subject || !message) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // Simulate form submission
+            alert('Thank you for your message! We will get back to you soon.');
+            this.reset();
+        });
+
+        // Membership form submission handling
+        document.getElementById('membershipForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const firstName = formData.get('firstName');
+            const lastName = formData.get('lastName');
+            const email = formData.get('email');
+            const phone = formData.get('phone');
+            const profession = formData.get('profession');
+            const address = formData.get('address');
+            const city = formData.get('city');
+            const whyJoin = formData.get('whyJoin');
+            const terms = formData.get('terms');
+            
+            // Validation
+            if (!firstName || !lastName || !email || !phone || !profession || !address || !city || !whyJoin || !terms) {
+                alert('Please fill in all required fields and accept the terms and conditions.');
+                return;
+            }
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+            
+            // Phone validation (basic)
+            const phoneRegex = /^[\+]?[0-9\s\-\(\)]{10,}$/;
+            if (!phoneRegex.test(phone)) {
+                alert('Please enter a valid phone number.');
+                return;
+            }
+            
+            // Simulate form submission
+            alert(`Thank you for your membership application, ${firstName}! Your application has been submitted for review by our membership committee. We will contact you within 5-7 business days to discuss the next steps.`);
+            
+            // Reset form
+            this.reset();
+            closeMembershipModal();
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '-50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Add a small delay before adding the class
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                        entry.target.classList.add('fade-in');
+                    }, 100);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections and project cards for animation
+        document.addEventListener('DOMContentLoaded', function() {
+            // First hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                observer.observe(section);
+            });
+
+            // Observe project cards separately for staggered animation
+            document.querySelectorAll('.project-card').forEach(card => {
+                observer.observe(card);
+            });
+
+            // Set up number counter animation for project card stats
+            const statsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const statNumber = entry.target;
+                        statNumber.classList.add('visible');
+                        
+                        const finalNumber = parseInt(statNumber.textContent.replace(/[^0-9]/g, ''));
+                        let currentNumber = 0;
+                        const duration = 1500; // 1.5 seconds
+                        const increment = finalNumber / (duration / 16); // 60fps
+                        
+                        function updateNumber() {
+                            if (currentNumber < finalNumber) {
+                                currentNumber = Math.min(currentNumber + increment, finalNumber);
+                                statNumber.textContent = Math.round(currentNumber).toLocaleString();
+                                requestAnimationFrame(updateNumber);
+                            } else {
+                                statNumber.textContent = finalNumber.toLocaleString();
+                            }
+                        }
+                        
+                        updateNumber();
+                    }
+                });
+            }, {
+                threshold: 0.5
+            });
+
+            // Observe all stat numbers
+            document.querySelectorAll('.project-card-stat-number').forEach(stat => {
+                statsObserver.observe(stat);
+            });
+        });
+
+        // Observe all project cards
+        document.querySelectorAll('.project-card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // Header background change on scroll
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'linear-gradient(135deg, #17458f 0%, #0067c8 100%)';
+            } else {
+                header.style.background = 'linear-gradient(135deg, #17458f 0%, #0067c8 100%)';
+            }
+        });
+
+        // Animate stats when they come into view
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statNumber = entry.target;
+                    statNumber.classList.add('visible');
+                    
+                    const finalNumber = parseInt(statNumber.textContent.replace(/[^0-9]/g, ''));
+                    let currentNumber = 0;
+                    const duration = 2000; // 2 seconds
+                    const increment = finalNumber / (duration / 16); // 60fps
+                    
+                    function updateNumber() {
+                        if (currentNumber < finalNumber) {
+                            currentNumber = Math.min(currentNumber + increment, finalNumber);
+                            statNumber.textContent = Math.round(currentNumber).toLocaleString();
+                            requestAnimationFrame(updateNumber);
+                        } else {
+                            statNumber.textContent = finalNumber.toLocaleString() + (statNumber.dataset.suffix || '');
+                        }
+                    }
+                    
+                    updateNumber();
+                }
+            });
+        }, {
+            threshold: 0.5
+        });
+
+        // Observe all stat numbers when modal opens
+        function observeStats() {
+            document.querySelectorAll('.stat-number').forEach(stat => {
+                statsObserver.observe(stat);
+            });
+        }
+    </script>
+</body>
+</html>
